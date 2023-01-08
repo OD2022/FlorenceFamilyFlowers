@@ -48,7 +48,7 @@ managers duty to order new products from the external farms.
 ● Florence’s family charges in cedis.
 
 
-Functionalities
+**Functionalities**
 1. See what products are popular with an ethnicity.
 2. See what arrangements having a particular colour in their scheme are used in an event.
 3. Check the number of times a driver has been to a list of cities.
@@ -57,7 +57,7 @@ Functionalities
 6. See all customers and their purchases.
 
 
-Enterprise Rules
+**Enterprise Rules**
 ● A farm can supply to a variety of plants and flowers of different species
 ● A product is supplied by one farm and one farm only
 ● A designer can manage many events
@@ -96,153 +96,10 @@ manager.
 
 
 
-Key notes
+**Key notes**
 ● Handedness indicates left or right-handed driver
 ● Height is in metres
 ● Y/N means Yes and No
 ● DOP means date of planting
 
 
-
-
-Strong Entities and their non key attributes
-Employees(GEN)
-firstname lastname, gender, country, address, DOB, date_of_employment, date_of_departure 
-date, emergency_contact, ethnicity
-Designer(SPEC)(max_qualification)
-Horticulturalist(SPEC)(degree)
-Manager(SPEC)(start_date date, end_date date)
-Driver(SPEC)(drivers_license, handing, height, sightedness)
-Florist(SPEC)(packing_speed, knotting_speed)
-Customers(GEN)
-address, email
-IndividualCustomer(SPEC)(f_name, l_name, gender, DOB, marital_status, ethnicity)
-CompanyCustomer(SPEC)(comp_name, reg_no, comp_type)
-Vehicles
-manufacturer, vehicle_name, vehicle_model, vehicle_type, plate_number, VRN
-Arrangements
-arrangement_name, color_scheme, info, price
-Farms(GEN)
-farm_name, address, city, country
-InhouseFarm(SPEC)(species, acrage, DOP, exp_harvest_date, soil_type, soil_ph)
-ExternalFarm(SPEC)(email, contact_no, admin_address)
-Weak entities and their non-key attributes
-Products(GEN)
-product_name, species, quantity, price
-Flower(SPEC)(color, scent, texture, shelf_life)
-Plant(SPEC)(DOP, life_cycle, climate, max_height, flowering)
-Seed(SPEC)(Flowering, Fruiting, growth_time, climate, max_height)
-Events
-event_type, date_of_event, total_cost, city, country, address
-EventsArrangements
-ArrangementQuantity
-ProductArrangements
-Product_quantity
-Instance_of_purchase(GEN)
-quantity, total, date_of_purchase date, mode_of_payment
-online_instance_of_product_purchase(SPEC)(TransactionID, time_of_purchase, city, 
-country)
-online_instance_of_arrangement_purchase(SPEC)(TransactionID, time_of_purchase, city, 
-country)
-In-store_instance_of_product_purchase(SPEC)()
-In-store_instance_of_arrangement_purchase(SPEC)()
-Instance_of_delivery
-city, destination_address, expected_date_of_delivery, date_of_delivery
-Instance_of_request
-quantity, total_cost, date_of_request, date_of_delivery
-TelephoneCustomer()
-TelephoneEmployee()
-Logical Table Derivation
-● Employees(GEN)(EmployeeID, firstname lastname, gender, country, address, DOB, 
-date_of_employment, date_of_departure date, emergency_contact, ethnicity)
-a. Designer(SPEC)(EmployeeID, max_qualification)
-b. Horticulturalist(SPEC)(EmployeeID, degree)
-c. Manager(SPEC)(EmployeeID, start_date date, end_date date)
-d. Driver(SPEC)(EmployeeID, drivers_license, handing, height, sightedness)
-e. Florist(SPEC)(EmployeeID, packing_speed, knotting_speed)
-● Customers(GEN)(CustomerID, address, email)
-a. IndividualCustomer(SPEC)(CustomerID, f_name, l_name, gender, DOB, 
-marital_status, ethnicity)
-b. CompanyCustomer(SPEC)(CustomerID, comp_name, reg_no, comp_type)
-● Vehicles(VehicleID, manufacturer, vehicle_name, vehicle_model, vehicle_type, 
-plate_number, VRN)
-● Arrangements(ArrangementID, arrangement_name, color_scheme, info, price)
-● Farms(FarmID, farm_name, address, city, country)
-a. InhouseFarm(SPEC)(FarmID, species, acrage, DOP, exp_harvest_date, 
-soil_type char, soil_ph)
-b. ExternalFarm(SPEC)(FarmID, email, contact_no, admin_address)
-● Products(GEN)(ProductID, FarmID, product_name, species, quantity, price)
-a. Flower(SPEC)(ProductID, color, scent, texture, shelf_life)
-b. Plant(SPEC)(ProductID, DOP, life_cycle, climate, max_height, flowering)
-c. Seed(SPEC)(ProductID, Flowering, Fruiting, growth_time, climate, 
-max_height)
-● Events(EventID, CustomerID, DesignerID, event_type, date_of_event, total_cost, 
-city, country, address)
-● EventsArrangements(EventID, ArrangementID, ArrangementQuantity)
-● ProductArrangements(ArrangementID, ProductID, product_quantity)
-● Instance_of_purchase(GEN)(PurchaseID, CustomerID, quantity, total, 
-date_of_purchase date, mode_of_payment)
-a. Online_instance_of_product_purchase(SPEC)(PurchaseID, ProductID, 
-TransactionID, time_of_purchase, city, country)
-b. Online_instance_of_arrangement_purchase(SPEC)(PurchaseID,
-ArrangementID, TransactionID, time_of_purchase, city, country)
-c. In-store_instance_of_product_purchase(SPEC)(PurchaseID, FloristID, 
-ProductID)
-d. In-store_instance_of_arrangement_purchase(SPEC)(PurchaseID, FloristID, 
-ArrangementID)
-● Instance_of_delivery(DeliveryID, PurchaseID, VehicleID, DriverID, city, 
-destination_address, expected_date_of_delivery, date_of_delivery)
-● Instance_of_request(RequestID, FarmID, ProductID, ManagerID, quantity, 
-total_cost, date_of_request, date_of_delivery)
-● TelephoneCustomer(tel_no, CustomerID)
-● TelephoneEmployee(tel_no, EmployeeID)
-Indexes
-##Make it easier and faster to look up the destination of deliveries
-CREATE INDEX idx_destination ON Instance_of_Delivery(destination_address);
-##Make it easier for a customer to look up a color of a flower
-CREATE INDEX idx_color ON Flower(color);
-##Make it easier for a customer to look up the colorscheme of an arrangement
-CREATE INDEX idx_colorscheme ON Arrangements(color_scheme);
-##Make it easier to get accounting figures
-CREATE INDEX idx_ptotal ON Instance_of_purchase(total);
-##Make it easier to look up a product by species
-CREATE INDEX idx_sname ON Products(species);
-QUERIES
-Functionality 2
-SELECT * FROM Arrangements WHERE Arrangements.color_scheme LIKE '%PINK%' 
-AND ArrangementID IN(
-SELECT EventsArrangements.ArrangementID FROM EventsArrangements WHERE 
-EventsArrangements.EventID IN(
-SELECT Events.EventID FROM Events WHERE Events.event_type = 'WEDDING'));
-Functionality 6
-SELECT IndividualCustomer.f_name, IndividualCustomer.l_name, 
-Instance_of_purchase.PurchaseID
-FROM IndividualCustomer
-LEFT JOIN Instance_of_purchase ON IndividualCustomer.CustomerID = 
-Instance_of_purchase.CustomerID
-ORDER BY IndividualCustomer.l_name; 
-Functionality5
-###View the products and the farms that they come from, and whether or not they are 
-organic
-SELECT Products.species, Farms.farm_name, Farms.FarmID, Farms.organic
-FROM Products
-INNER JOIN Farms ON Products.FarmID = Farms.FarmID
-ORDER BY Products.species;
-Functionality 1
-##Know which products an ethnicity is buying
-SELECT Products.species, IndividualCustomer.ethnicity FROM Products, 
-IndividualCustomer 
-WHERE IndividualCustomer.ethnicity IN ('Hispanic' ,'White') ORDER BY 
-IndividualCustomer.ethnicity;
-Functionality3
-##Find out the number of deliveries a driver has made in accra or tema
-SELECT COUNT(Instance_of_delivery.DriverID) FROM Instance_of_delivery 
-WHERE Instance_of_delivery.DriverID = 2 AND Instance_of_delivery.city IN ('Accra', 
-'Tema');
-Functionality 4
-##Find out the flowers that cost more than 50 cedes and if it's from an organic farm or not
-SELECT Products.ProductID, Products.species, Products.price, Flower.color, 
-Farms.organic FROM Products, Flower, Farms WHERE Products.ProductID = 
-Flower.ProductID AND
-Products.price > 50 AND Products.FarmID = Farms.FarmID
-ORDER BY Products.price;
