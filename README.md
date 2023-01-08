@@ -1,8 +1,8 @@
 # FlorenceFamilyFlowers
-A database project designed to cater to the various needs of a hypothetical Flower shop.
+A database project designed to cater to the various needs of a hypothetical Flower shop. For more details, consult the Description.pdf file, and run the florist_service.sql code.
 
 
-About Florence’s Family Flowers
+**About Florence’s Family Flowers**
 
 Plants are very important to society, as they provide oxygen, absorb carbon dioxide, supply 
 nutrients to the soil and serve as food for other creatures. Flowers, in tandem with bees, are 
